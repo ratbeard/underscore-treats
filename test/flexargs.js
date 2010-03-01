@@ -1,8 +1,6 @@
 $(document).ready(function() {
   // msg as last arg is annoying
-  function it (msg, actual, expected) { 
-    same(actual, expected, msg);
-  }
+  var it = function (msg, actual, expected) { same(actual, expected, msg); };
   
   var dogs = [
     {name: 'bubbles', age: 5}, 
