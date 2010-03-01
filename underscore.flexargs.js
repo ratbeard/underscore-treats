@@ -29,3 +29,17 @@ var origFilter = _.filter;
    return origFilter(obj, iterator, context)
    
  };
+
+
+
+ var origmap = _.map;
+
+_.map = function(obj, iterator, context) {
+  if (_.isString(iterator)) {
+    var key = iterator, match;
+    iterator = (match=/(.*)\(\)$/.exec(key)) ?
+      function (item) { return item[match[1]](); } :
+      function (item) { return item[key]; };
+  }
+  return origmap(obj, iterator, context)
+};
