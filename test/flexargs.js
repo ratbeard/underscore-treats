@@ -88,4 +88,103 @@ $(document).ready(function() {
   
   
   
+  test('detect', function() {
+    var result = _.detect([1, 2, 3], function(num){ return num * 2 == 4; });
+    equals(result, 2, 'found the first "2" and broke the loop');
+    
+    
+    it('accepts an object of properties to match',
+      _.detect(dogs, {age: 5}),
+      _.detect(dogs, function (dog) { return dog.age == 5; })
+    );
+
+    it('accepts an object with multiple properties to match',
+      _.detect(dogs, {age: 5, name: 'lily'}),
+      _.detect(dogs, function (dog) { return dog.age == 5 && dog.name == 'lily'; })
+    );
+      
+    it('accepts a key and value to match',
+      _.detect(dogs, 'age', 5),
+      _.detect(dogs, function (dog) { return dog.age == 5; })
+    );
+      
+    it('accepts a regex as a value and calls regex.test()',
+      _.detect(dogs, 'name', /l/),
+      _.detect(dogs, function (dog) { return /l/.test(dog.name) })
+    );
+      
+    it('accepts a regex as a value in an object',
+      _.detect(dogs, {name: /e/, age: 5}),
+      _.detect(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
+    );
+  });
+  
+  
+  
+  test('collections: all', function() {
+    ok(_.all([]), 'the empty set');
+    ok(_.all([true, true, true]), 'all true values');
+    ok(!_.all([true, false, true]), 'one false value');
+    ok(_.all([0, 10, 28], function(num){ return num % 2 == 0; }), 'even numbers');
+    ok(!_.all([0, 11, 28], function(num){ return num % 2 == 0; }), 'an odd number');
+    ok(_.every([true, true, true]), 'aliased as "every"');
+    
+    it('accepts an object of properties to match',
+      _.all(dogs, {age: 5}),
+      _.all(dogs, function (dog) { return dog.age == 5; })
+    );
+    it('accepts an object with multiple properties to match',
+      _.all(dogs, {age: 5, name: 'lily'}),
+      _.all(dogs, function (dog) { return dog.age == 5 && dog.name == 'lily'; })
+    );
+    it('accepts a key and value to match',
+      _.all(dogs, 'age', 5),
+      _.all(dogs, function (dog) { return dog.age == 5; })
+    );
+    it('accepts a regex as a value and calls regex.test()',
+      _.all(dogs, 'name', /(a|e|i)/),
+      _.all(dogs, function (dog) { return /(a|e|i)/.test(dog.name) })
+    );
+    it('accepts a regex as a value in an object',
+      _.all(dogs, {name: /e/, age: 5}),
+      _.all(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
+    );
+  });
+
+  test('collections: any', function() {
+    ok(!_.any([]), 'the empty set');
+    ok(!_.any([false, false, false]), 'all false values');
+    ok(_.any([false, false, true]), 'one true value');
+    ok(!_.any([1, 11, 29], function(num){ return num % 2 == 0; }), 'all odd numbers');
+    ok(_.any([1, 10, 29], function(num){ return num % 2 == 0; }), 'an even number');
+    ok(_.some([false, false, true]), 'aliased as "some"');
+    
+    it('accepts an object of properties to match',
+      _.any(dogs, {age: 5}),
+      _.any(dogs, function (dog) { return dog.age == 5; })
+    );
+
+    it('accepts an object with multiple properties to match',
+      _.any(dogs, {age: 5, name: 'lily'}),
+      _.any(dogs, function (dog) { return dog.age == 5 && dog.name == 'lily'; })
+    );
+      
+    it('accepts a key and value to match',
+      _.any(dogs, 'age', 5),
+      _.any(dogs, function (dog) { return dog.age == 5; })
+    );
+      
+    it('accepts a regex as a value and calls regex.test()',
+      _.any(dogs, 'name', /l/),
+      _.any(dogs, function (dog) { return /l/.test(dog.name) })
+    );
+      
+    it('accepts a regex as a value in an object',
+      _.any(dogs, {name: /e/, age: 5}),
+      _.any(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
+    );
+  });
+  
+  
+  
 });

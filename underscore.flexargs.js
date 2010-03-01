@@ -31,6 +31,82 @@ var origFilter = _.filter;
  };
 
 
+ var origdetect = _.detect;
+
+  _.detect = function(obj, iterator, context) {
+    if (!_.isFunction(iterator)) {
+      
+      if (typeof iterator === 'object') {  
+        var expected = iterator, iterator = function (item) { 
+          return _.every(expected, function (value, key) {
+            return _.isRegExp(value) ? value.test(item[key]) : value === item[key];
+          });
+        };
+      }
+      
+      else {  
+        var key = iterator, value = context;
+        iterator = _.isRegExp(value) ? 
+          function(item) { return value.test(item[key]);} :
+          function(item) { return item[key] === value; };
+      }
+    }
+
+    return origdetect(obj, iterator, context)
+
+  };
+
+
+var origall = _.all
+_.all = function (obj, iterator, context) {
+  iterator = iterator || _.identity;
+  if (!_.isFunction(iterator)) {
+    
+    if (typeof iterator === 'object') {  
+      var expected = iterator, iterator = function (item) { 
+        return _.every(expected, function (value, key) {
+          return _.isRegExp(value) ? value.test(item[key]) : value === item[key];
+        });
+      };
+    }
+    
+    else {  
+      var key = iterator, value = context;
+      iterator = _.isRegExp(value) ? 
+        function(item) { return value.test(item[key]);} :
+        function(item) { return item[key] === value; };
+    }
+  }
+
+  return origall(obj, iterator, context)
+}
+
+
+var origany = _.any
+_.any = function (obj, iterator, context) {
+  iterator = iterator || _.identity;
+  if (!_.isFunction(iterator)) {
+    
+    if (typeof iterator === 'object') {  
+      var expected = iterator, iterator = function (item) { 
+        return _.every(expected, function (value, key) {
+          return _.isRegExp(value) ? value.test(item[key]) : value === item[key];
+        });
+      };
+    }
+    
+    else {  
+      var key = iterator, value = context;
+      iterator = _.isRegExp(value) ? 
+        function(item) { return value.test(item[key]);} :
+        function(item) { return item[key] === value; };
+    }
+  }
+
+  return origany(obj, iterator, context)
+}
+
+
 
  var origmap = _.map;
 
@@ -43,3 +119,7 @@ _.map = function(obj, iterator, context) {
   }
   return origmap(obj, iterator, context)
 };
+
+
+
+
