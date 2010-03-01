@@ -1,9 +1,8 @@
-
 flexargs = function (iterator, context) {
   return (typeof iterator === 'object') ? multicheck(iterator)
   :      (typeof iterator === 'string') ? singlecheck(iterator, context)
   :                                       iterator;
-}
+};
 
 singlecheck = function (key, value) {
   return _.isRegExp(value) ? 
@@ -12,49 +11,46 @@ singlecheck = function (key, value) {
 };
 
 multicheck = function (props) {
+  var checks = _.map(props, function (value, key) {
+    return singlecheck(key, value);
+  });
   return function (item) { 
-     return _.every(props, function (value, key) {
-       return singlecheck(key, value)(item);
+     return _.every(checks, function (check) {
+       return check(item);
      });
-   }
-}
+   };
+};
 
 
-var origFilter = _.filter;
- _.filter = function(obj, iterator, context) {
-   return origFilter(obj, flexargs(iterator, context), context)
- };
+var origfilter = _.filter;
+_.filter = function(obj, iterator, context) {
+  return origfilter(obj, flexargs(iterator, context), context);
+};
 
+var origdetect = _.detect;
+_.detect = function(obj, iterator, context) {
+  return origdetect(obj, flexargs(iterator, context), context);
+};
 
- var origdetect = _.detect;
-  _.detect = function(obj, iterator, context) {
-    return origdetect(obj, flexargs(iterator, context), context)
-  };
-
-
-var origall = _.all
+var origall = _.all;
 _.all = function (obj, iterator, context) {
-  return origall(obj, flexargs(iterator, context), context)
-}
+  return origall(obj, flexargs(iterator, context), context);
+};
 
-
-var origany = _.any
+var origany = _.any;
 _.any = function (obj, iterator, context) {
-  return origany(obj, flexargs(iterator, context), context)
-}
-
-
+  return origany(obj, flexargs(iterator, context), context);
+};
 
  var origmap = _.map;
-
 _.map = function(obj, iterator, context) {
-  if (_.isString(iterator)) {
-    var key = iterator, match;
+  if (typeof iterator === 'string') {
+    var match, key = iterator;
     iterator = (match=/(.*)\(\)$/.exec(key)) ?
-      function (item) { return item[match[1]](); } :
-      function (item) { return item[key]; };
+      function (item) { return item[match[1]](); }
+    : function (item) { return item[key]; };
   }
-  return origmap(obj, iterator, context)
+  return origmap(obj, iterator, context);
 };
 
 
