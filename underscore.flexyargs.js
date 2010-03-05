@@ -5,13 +5,24 @@
 
 (function () {
 
+// look at the arguments given in the iterator and context slot and determine
+// if we need to build a custom iterator for a single prop, multiple props, or
+// just pass the iterator function through as is:
 var flexargs = function (iterator, context) {
-  return (typeof iterator === 'object') ? multicheck(iterator)  // {keys:props}
-  :      (typeof iterator === 'string') ? singlecheck(iterator, context) // key, prop
-  :                                       iterator;   // standard iterator fn
+  return (typeof iterator === 'object') ? multicheck(iterator)
+  :      (typeof iterator === 'string') ? singlecheck(iterator, context)
+  :                                       iterator;
 };
 
-var invoke_re = /(.*)\(\)$/;
+// check if string ends with ()'s.  captures everything before the ()'s:
+var invoke_re = /(.*)\(\)$/; 
+
+// Build a checking iterator given a key, and a value
+// - if value is a regex, make a str testing iterator.  This is 100x more useful
+//   than checking if a value === a given regex object.
+// - if value ends with `()`, return the result of invoking that function
+// - if value is undefined, just return the property at that key
+// - otherwise, test that the property at that key === the given value
 var singlecheck = function (key, value) {
   var m;
   return _.isRegExp(value)  ?   function (item) { return value.test(item[key]);} 
@@ -20,8 +31,7 @@ var singlecheck = function (key, value) {
   :                             function (item) { return item[key] === value; };
 };
 
-// perform multiple property checks
-// build array of checks up front before iteration
+// Perform multiple property checks, which it builds upfront before iteration.
 var multicheck = function (props) {
   var checks = _.map(props, function (value, key) {
     return singlecheck(key, value);
