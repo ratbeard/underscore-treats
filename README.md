@@ -1,5 +1,3 @@
-Tasty plugins for the delicious underscore library.
-
 flexyargs
 =========
 
