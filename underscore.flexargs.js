@@ -6,10 +6,13 @@ var flexargs = function (iterator, context) {
   :                                       iterator;   // standard iterator fn
 };
 
+var invoke_re = /(.*)\(\)$/;
 var singlecheck = function (key, value) {
-  return _.isRegExp(value) ? 
-    function(item) { return value.test(item[key]);} 
-  : function(item) { return item[key] === value; };
+  var m;
+  return _.isRegExp(value)  ?   function (item) { return value.test(item[key]);} 
+  : (m=invoke_re.exec(key)) ?   function (item) { return item[m[1]](); }
+  : value === undefined     ?   function (item) { return item[key]; }
+  :                             function (item) { return item[key] === value; };
 };
 
 var multicheck = function (props) {
@@ -31,24 +34,10 @@ var makeflexy = function (name) {
 };
 
 _.mixin(
-  _.reduce(['filter','detect','any','all'], {}, function (memo, name) {
+  _.reduce(['filter','detect','any','all','map'], {}, function (memo, name) {
     memo[name] = makeflexy(name);
     return memo;
   })
 );
-
-
-var origmap = _.map;
-_.mixin({
-  map: function(obj, iterator, context) {
-    if (typeof iterator === 'string') {
-      var match, key = iterator;
-      iterator = (match=/(.*)\(\)$/.exec(key)) ?
-        function (item) { return item[match[1]](); }
-      : function (item) { return item[key]; };
-    }
-    return origmap(obj, iterator, context);
-  }
-})
 
 })();

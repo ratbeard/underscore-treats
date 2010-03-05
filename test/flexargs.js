@@ -2,6 +2,7 @@ $(document).ready(function() {
   // msg as last arg is annoying
   var it = function (msg, actual, expected) { same(actual, expected, msg); };
   
+  // Fixture data
   var dogs = [
     {name: 'bubbles', age: 5}, 
     {name: 'lily', age: 5}, 
@@ -53,6 +54,11 @@ $(document).ready(function() {
     it('can pass a regex in an object',
       _.filter(dogs, {name: /e/, age: 5}),
       _.filter(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
+    );
+    
+    it('can take a method to invoke',
+      _.filter(planets, 'habitable()'),
+      _.filter(planets, function (planet) { return planet.habitable(); })
     );
   });
   
