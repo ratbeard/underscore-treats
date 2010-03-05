@@ -146,7 +146,7 @@ $(document).ready(function() {
     it('accepts a regex as a value in an object',
       _.all(dogs, {name: /e/, age: 5}),
       _.all(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
-    );
+    );    
   });
 
   test('collections: any', function() {
