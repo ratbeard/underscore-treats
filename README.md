@@ -10,8 +10,7 @@ Shorthands to generate iterator functions for most of the common use cases of th
     
 The basic shorthand is to perform a `===` between a key and a value:
 
-    _.any(dogs, 'name', 'leroy')  
-    // generates an iterator that looks like:
+    _.any(dogs, 'name', 'leroy')  // generates an iterator that looks like:
     _.any(dogs, function (dog) { return dog.name === 'leroy'; })
     
     _.detect(dog, 'age', 5),
@@ -28,28 +27,26 @@ There's some special cases that are handled too.
 If you just a key (technically, if value is `undefined`), it will return the property at that key:
 
     _.map(dogs, 'name')
-    _.map(dogs, function (dog) return dog.name; })
-    // or the underscore provided shortcut:
-    _.pluck(dogs, 'name')
+    _.map(dogs, function (dog) return dog.name; })  // or _.pluck(dogs, 'name')
     
 
-If the key ends with `()`, it will invoke that function and use the result
+If the key ends with `()`, it will use the result of invoking that function:
 
     _.map(dogs, 'isYappy()')
     _.map(dogs, function (dog) { return dog.isYappy(); })
     
 
-I've never needed to compare regular expression objects, but do often grep through a list of strings, so if value is a regex a string match iterator is built:
+If value is a regex a string match iterator is built:
 
     _.all(dogs, 'name', /(a|e|i)/)
     _.all(dogs, function (dog) { return /(a|e|i)/.test(dog.name); })
     
     
-By using `_.mixin()`, all these shorthands are available using a wrapper too:
+By using `_.mixin()`, all these shorthands are available on the wrapper too:
 
-    _.(dogs).all('name', /(a|e|i)/)
+    _(dogs).all('name', /(a|e|i)/)
 
 ### Notes
-You can still of course pass a normal iterator function in, which flexyargs will quickly pass through to the standard underscore extension.  No matter the case, if the native version of a collection method is available, it will be used!  
+You can still of course pass a normal iterator function in, which flexyargs will quickly pass through to the standard underscore implementation.  No matter the case, if the native version of a collection method is available, it will be used!
 
 Only the methods listed above have the flexy magic, not `some`, `every` and other aliases.
