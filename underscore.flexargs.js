@@ -1,8 +1,6 @@
 // 
 // TODO: 
-//  - test wrapping works
 //  - docs
-//  - better test for any / all
 //  - mixin to aliases ? 
 
 (function () {

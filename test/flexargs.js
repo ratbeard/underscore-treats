@@ -82,11 +82,16 @@ $(document).ready(function() {
     it('can take a single key to behave like pluck',
       _.map(dogs, 'name'),
       _.pluck(dogs, 'name')
-    );
+    )
     
     it('will invoke a method of the key ends with parenthesis',
       _.map(planets, 'habitable()'),
-      _.map(planets, function (p) { return p.habitable(); })
+      _.map(planets, function (p) { return p.habitable() })
+    )
+    
+    it('works as a wrapper',
+      _(planets).map('habitable()'),
+      _(planets).map(function (p) { return p.habitable() })
     )
   });
   
@@ -115,12 +120,12 @@ $(document).ready(function() {
     it('accepts a regex as a value and calls regex.test()',
       _.detect(dogs, 'name', /l/),
       _.detect(dogs, function (dog) { return /l/.test(dog.name) })
-    );
+    )
       
     it('accepts a regex as a value in an object',
-      _.detect(dogs, {name: /e/, age: 5}),
-      _.detect(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
-    );
+      _.detect(dogs, {name: /l/, age: 5}),
+      _.detect(dogs, function (dog) { return /l/.test(dog.name) && dog.age === 5})
+    )
   });
   
   
@@ -152,7 +157,9 @@ $(document).ready(function() {
     it('accepts a regex as a value in an object',
       _.all(dogs, {name: /e/, age: 5}),
       _.all(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
-    );    
+    )
+    it('works 1', _.all([[1], [2], [3]], 'length', 1), true)
+    it('works 2', _.all([[1], [4,4], [3]], 'length', 1), false)
   });
 
   test('collections: any', function() {
@@ -187,6 +194,8 @@ $(document).ready(function() {
       _.any(dogs, {name: /e/, age: 5}),
       _.any(dogs, function (dog) { return /e/.test(dog.name) && dog.age === 5})
     );
+    it('works 1', _.any([[1,4], [2,6], [3]], 'length', 1), true)
+    it('works 2', _.any([[1,4], [4,4], [3,6]], 'length', 1), false)
   });
   
   
