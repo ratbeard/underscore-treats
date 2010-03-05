@@ -1,3 +1,10 @@
+// 
+// TODO: 
+//  - test wrapping works
+//  - docs
+//  - better test for any / all
+//  - mixin to aliases ? 
+
 (function () {
 
 var flexargs = function (iterator, context) {
@@ -15,6 +22,8 @@ var singlecheck = function (key, value) {
   :                             function (item) { return item[key] === value; };
 };
 
+// perform multiple property checks
+// build array of checks up front before iteration
 var multicheck = function (props) {
   var checks = _.map(props, function (value, key) {
     return singlecheck(key, value);
@@ -26,6 +35,7 @@ var multicheck = function (props) {
    };
 };
 
+// wrap original fn with our flexyargs version
 var makeflexy = function (name) {
   var orig = _[name];
   return function (obj, iterator, context) {
@@ -33,6 +43,7 @@ var makeflexy = function (name) {
   };
 };
 
+// build up object of flexy fn's and mix it in to underscore
 _.mixin(
   _.reduce(['filter','detect','any','all','map'], {}, function (memo, name) {
     memo[name] = makeflexy(name);
