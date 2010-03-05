@@ -33,17 +33,17 @@ $(document).ready(function() {
 
     it('can filter by passing an object of properties to match',
       _.filter(dogs, {age: 5}),
-      _.filter(dogs, function (dog) { return dog.age == 5; })
+      _.filter(dogs, function (dog) { return dog.age === 5; })
     );
 
     it('can filter by passing an object of multiple properties to match',
       _.filter(dogs, {age: 5, name: 'lily'}),
-      _.filter(dogs, function (dog) { return dog.age == 5 && dog.name == 'lily'; })
+      _.filter(dogs, function (dog) { return dog.age === 5 && dog.name === 'lily'; })
     );
       
     it('can filter by passing a key and value to match',
       _.filter(dogs, 'age', 5),
-      _.filter(dogs, function (dog) { return dog.age == 5; })
+      _.filter(dogs, function (dog) { return dog.age === 5; })
     );
       
     it('passing a regex as a value calls regex.test()',
@@ -114,7 +114,7 @@ $(document).ready(function() {
       
     it('accepts a key and value to match',
       _.detect(dogs, 'age', 5),
-      _.detect(dogs, function (dog) { return dog.age == 5; })
+      _.detect(dogs, function (dog) { return dog.age === 5; })
     );
       
     it('accepts a regex as a value and calls regex.test()',
