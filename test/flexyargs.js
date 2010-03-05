@@ -201,3 +201,28 @@ $(document).ready(function() {
   
   
 });
+
+
+(function() {
+  var peeps = [];
+  for (var i=0; i<50; i++) peeps.push({name: 'dude', age: i});
+
+  JSLitmus.test('some() w/ iterator', function() {
+    _.some(peeps, function(peep){ return peep.age === 25 });
+  });
+
+  JSLitmus.test('any() w/ iterator', function() {
+    _.any(peeps, function(peep){ return peep.age === 25 });
+  });
+  
+  JSLitmus.test('any() w/ key, prop', function() {
+    _.any(peeps, 'age', 25);
+  });
+
+  
+  // JSLitmus.test('any() w/ key, prop', function() {
+  //   _.select(peeps, 'age', 25);
+  // });
+  
+  
+})();
